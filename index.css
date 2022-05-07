@@ -9,6 +9,17 @@ body {
 
 .container {
   overflow: hidden;
+  position: relative;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid #000;
 }
 
 canvas {
