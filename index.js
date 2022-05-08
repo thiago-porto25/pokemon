@@ -101,6 +101,9 @@ bgImg.src = './img/pokemon_map.png';
 const playerImg = new Image();
 playerImg.src = './img/playerDown.png';
 
+const foreImg = new Image();
+foreImg.src = './img/foreground.png';
+
 // Instantiating objects
 const background = new Sprite({
   img: bgImg,
@@ -116,9 +119,15 @@ const player = new Sprite({
   frames: { max: 4 },
 });
 
+const foreground = new Sprite({
+  img: foreImg,
+  position: { x: offset.x, y: offset.y },
+});
+
 // Populating movables
 movables.push(background);
 movables.push(...boundaries);
+movables.push(foreground);
 
 // Animation loop
 function animate() {
@@ -129,6 +138,7 @@ function animate() {
     boundary.draw();
   });
   player.draw();
+  foreground.draw();
 
   let moving = true;
 
