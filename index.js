@@ -12,6 +12,7 @@ const battleZonesMap = [];
 const boundaries = [];
 const battleZoneBoundaries = [];
 const playerVelocity = 1;
+const offset = { x: 139, y: 142 };
 let lastKey = '';
 const keys = {
   w: { pressed: false },
@@ -19,7 +20,9 @@ const keys = {
   s: { pressed: false },
   d: { pressed: false },
 };
-const offset = { x: 139, y: 142 };
+const battle = {
+  initiated: false,
+};
 
 // Functions
 function rectangularCollision(rect1, rect2) {
@@ -75,6 +78,9 @@ battleZonesMap.forEach((row, i) => {
 const bgImg = new Image();
 bgImg.src = './img/pokemon_map.png';
 
+const battleBgImg = new Image();
+battleBgImg.src = './img/battleBackground.png';
+
 const playerDownImg = new Image();
 playerDownImg.src = './img/playerDown.png';
 
@@ -94,6 +100,11 @@ foreImg.src = './img/foreground.png';
 const background = new Sprite({
   img: bgImg,
   position: { x: offset.x, y: offset.y },
+});
+
+const battleBackground = new Sprite({
+  img: battleBgImg,
+  position: { x: 0, y: 0 },
 });
 
 const player = new Sprite({
@@ -124,7 +135,7 @@ movables.push(...battleZoneBoundaries);
 
 // Animation loop
 function animate() {
-  window.requestAnimationFrame(animate);
+  const animationId = window.requestAnimationFrame(animate);
 
   background.draw();
   boundaries.forEach((boundary) => {
@@ -135,6 +146,11 @@ function animate() {
   });
   player.draw();
   foreground.draw();
+
+  let moving = true;
+  player.moving = false;
+
+  if (battle.initiated) return;
 
   if (keys.w.pressed || keys.s.pressed || keys.a.pressed || keys.d.pressed) {
     for (let i = 0; i < battleZoneBoundaries.length; i++) {
@@ -154,16 +170,36 @@ function animate() {
       if (
         rectangularCollision(player, battleZone) &&
         overlappingArea > (player.width * player.height) / 2 &&
-        Math.random() < 0.03
+        Math.random() < 0.02
       ) {
-        console.log('battle zone');
+        window.cancelAnimationFrame(animationId);
+
+        battle.initiated = true;
+        gsap.to('.flashing', {
+          opacity: 1,
+          repeat: 3,
+          yoyo: true,
+          duration: 0.4,
+          onComplete() {
+            gsap.to('.flashing', {
+              opacity: 1,
+              duration: 0.4,
+              onComplete() {
+                animateBattle();
+                document.querySelector('canvas').style.transform = 'scale(1)';
+                gsap.to('.flashing', {
+                  opacity: 0,
+                  duration: 0.4,
+                });
+              },
+            });
+          },
+        });
+
         break;
       }
     }
   }
-
-  let moving = true;
-  player.moving = false;
 
   if (keys.w.pressed && lastKey === 'w') {
     player.moving = true;
@@ -258,6 +294,12 @@ function animate() {
 }
 
 animate();
+
+function animateBattle() {
+  const battleAnimationId = window.requestAnimationFrame(animateBattle);
+
+  battleBackground.draw();
+}
 
 // Event listeners
 window.addEventListener('keydown', (e) => {
