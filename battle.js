@@ -12,6 +12,22 @@ const battleBackground = new Sprite({
   position: { x: 0, y: 0 },
 });
 
+function endBattle() {
+  gsap.to('.flashing', {
+    opacity: 1,
+    onComplete() {
+      cancelAnimationFrame(battleAnimationId);
+      document.querySelector('canvas').style.transform = 'scale(4)';
+      battle.initiated = false;
+      animate();
+      document.querySelector('.battle-ui').style.display = 'none';
+      gsap.to('.flashing', {
+        opacity: 0,
+      });
+    },
+  });
+}
+
 function initBattle() {
   document.querySelector('canvas').style.transform = 'scale(1)';
   document.querySelector('.battle-ui').style.display = 'block';
@@ -55,19 +71,7 @@ function initBattle() {
           draggle.faint();
         });
         queue.push(() => {
-          gsap.to('.flashing', {
-            opacity: 1,
-            onComplete() {
-              cancelAnimationFrame(battleAnimationId);
-              document.querySelector('canvas').style.transform = 'scale(4)';
-              battle.initiated = false;
-              animate();
-              document.querySelector('.battle-ui').style.display = 'none';
-              gsap.to('.flashing', {
-                opacity: 0,
-              });
-            },
-          });
+          endBattle();
         });
         return;
       }
@@ -82,6 +86,9 @@ function initBattle() {
       if (emby.health - randomAtk.damage <= 0) {
         queue.push(() => {
           emby.faint();
+        });
+        queue.push(() => {
+          endBattle();
         });
         return;
       }
