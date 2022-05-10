@@ -19,6 +19,7 @@ function endBattle() {
       cancelAnimationFrame(battleAnimationId);
       document.querySelector('canvas').style.transform = 'scale(4)';
       battle.initiated = false;
+      audio.map.play();
       animate();
       document.querySelector('.battle-ui').style.display = 'none';
       gsap.to('.flashing', {

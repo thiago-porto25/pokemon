@@ -13,6 +13,7 @@ const tackleAtkAnim = (position, isEnemy, callback) => {
       y: position.y - distance,
       duration: 0.1,
       onComplete() {
+        audio.tackleHit.play();
         callback();
       },
     })
@@ -68,12 +69,13 @@ const fireballAtkAnim = (position, renderedSprites, recipient, callback) => {
     animate: true,
     rotation: 1,
   });
+  audio.fireballInit.play();
   renderedSprites.splice(1, 0, fireball);
-
   gsap.to(fireball.position, {
     x: recipient.position.x,
     y: recipient.position.y,
     onComplete() {
+      audio.fireballHit.play();
       callback();
       renderedSprites.splice(1, 1);
     },

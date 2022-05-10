@@ -6,6 +6,7 @@ canvas.width = 1024;
 canvas.height = 576;
 
 // Variables
+let musicStarted = false;
 const movables = [];
 const collisionsMap = [];
 const battleZonesMap = [];
@@ -168,6 +169,9 @@ function animate() {
         window.cancelAnimationFrame(animationId);
 
         battle.initiated = true;
+        audio.map.stop();
+        audio.initBattle.play();
+
         gsap.to('.flashing', {
           opacity: 1,
           repeat: 3,
@@ -180,6 +184,7 @@ function animate() {
               onComplete() {
                 initBattle();
                 animateBattle();
+                audio.battle.play();
                 gsap.to('.flashing', {
                   opacity: 0,
                   duration: 0.4,
@@ -332,5 +337,12 @@ window.addEventListener('keyup', (e) => {
     case 'd':
       keys.d.pressed = false;
       break;
+  }
+});
+
+window.addEventListener('click', () => {
+  if (!musicStarted) {
+    audio.map.play();
+    musicStarted = true;
   }
 });

@@ -120,6 +120,7 @@ class Monster extends Sprite {
         });
         break;
       case 'Fireball':
+        audio.fireballInit.play();
         fireballAtkAnim(this.position, renderedSprites, recipient, () => {
           recipient.takeDamage(attack.damage);
         });
@@ -147,5 +148,7 @@ class Monster extends Sprite {
     gsap.to(this, {
       opacity: 0,
     });
+    audio.battle.stop();
+    audio.victory.play();
   }
 }
