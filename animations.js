@@ -43,13 +43,6 @@ const tackleDefAnim = (recipient, damage) => {
         duration: 0.08,
         yoyo: true,
         repeat: 5,
-        onComplete() {
-          if (recipient.health - damage <= 0) {
-            gsap.to(recipient, {
-              opacity: 0,
-            });
-          }
-        },
       });
 
       gsap.to(elementSelector, {

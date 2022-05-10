@@ -24,25 +24,23 @@ class Sprite {
     sprites,
     scale = 1,
     animate = false,
-    isEnemy = false,
     rotation = 0,
   }) {
-    this.img = img;
+    this.img = new Image();
     this.position = position;
     this.velocity = velocity;
-    this.health = 100;
     this.frames = { ...frames, current: 0, elapsed: 0 };
     this.animate = false;
     this.sprites = sprites;
     this.scale = scale;
     this.animate = animate;
     this.opacity = 1;
-    this.isEnemy = isEnemy;
     this.rotation = rotation;
     this.img.onload = () => {
       this.width = this.img.width / this.frames.max / this.frames.max;
       this.height = this.img.height / this.frames.max;
     };
+    this.img.src = img.src;
   }
 
   draw() {
@@ -78,8 +76,43 @@ class Sprite {
       else this.frames.current = 0;
     }
   }
+}
+
+class Monster extends Sprite {
+  constructor({
+    isEnemy = false,
+    name,
+    img,
+    position,
+    velocity,
+    frames = { max: 1, hold: 10 },
+    sprites,
+    scale = 1,
+    animate = false,
+    rotation = 0,
+    attacks,
+  }) {
+    super({
+      img,
+      position,
+      velocity,
+      frames,
+      sprites,
+      scale,
+      animate,
+      rotation,
+    });
+    this.name = name;
+    this.health = 100;
+    this.isEnemy = isEnemy;
+    this.attacks = attacks;
+  }
 
   attack(attack, recipient, renderedSprites) {
+    const dialog = document.querySelector('.battle-overlay');
+    dialog.style.display = 'block';
+    dialog.children[0].textContent = `${this.name} used ${attack.name}`;
+
     switch (attack.name) {
       case 'Tackle':
         tackleAtkAnim(this.position, this.isEnemy, () => {
@@ -97,5 +130,22 @@ class Sprite {
   takeDamage(damage) {
     this.health -= damage;
     tackleDefAnim(this, damage);
+  }
+
+  faint() {
+    const dialog = document.querySelector('.battle-overlay');
+    dialog.children[0].textContent = `${this.name} fainted`;
+
+    gsap.to(this.position, {
+      y: this.position.y + 50,
+      onComplete: () => {
+        gsap.to(this.position, {
+          y: this.position.y - 50,
+        });
+      },
+    });
+    gsap.to(this, {
+      opacity: 0,
+    });
   }
 }

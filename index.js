@@ -11,7 +11,6 @@ const collisionsMap = [];
 const battleZonesMap = [];
 const boundaries = [];
 const battleZoneBoundaries = [];
-const renderedSprites = [];
 const playerVelocity = 1;
 const offset = { x: 139, y: 142 };
 let lastKey = '';
@@ -79,9 +78,6 @@ battleZonesMap.forEach((row, i) => {
 const bgImg = new Image();
 bgImg.src = './img/pokemon_map.png';
 
-const battleBgImg = new Image();
-battleBgImg.src = './img/battleBackground.png';
-
 const playerDownImg = new Image();
 playerDownImg.src = './img/playerDown.png';
 
@@ -97,21 +93,10 @@ playerLeftImg.src = './img/playerLeft.png';
 const foreImg = new Image();
 foreImg.src = './img/foreground.png';
 
-const draggleImg = new Image();
-draggleImg.src = './img/draggleSprite.png';
-
-const embyImg = new Image();
-embyImg.src = './img/embySprite.png';
-
 // Instantiating objects
 const background = new Sprite({
   img: bgImg,
   position: { x: offset.x, y: offset.y },
-});
-
-const battleBackground = new Sprite({
-  img: battleBgImg,
-  position: { x: 0, y: 0 },
 });
 
 const player = new Sprite({
@@ -120,7 +105,7 @@ const player = new Sprite({
     x: canvas.width / 2 - 192 / 30,
     y: canvas.height / 2 - 68 / 6,
   },
-  frames: { max: 4 },
+  frames: { max: 4, hold: 10 },
   sprites: {
     up: playerUpImg,
     right: playerRightImg,
@@ -133,21 +118,6 @@ const player = new Sprite({
 const foreground = new Sprite({
   img: foreImg,
   position: { x: offset.x, y: offset.y },
-});
-
-const draggle = new Sprite({
-  img: draggleImg,
-  position: { x: 800, y: 100 },
-  frames: { max: 4, hold: 30 },
-  animate: true,
-  isEnemy: true,
-});
-
-const emby = new Sprite({
-  img: embyImg,
-  position: { x: 280, y: 325 },
-  frames: { max: 4, hold: 30 },
-  animate: true,
 });
 
 // Populating movables
@@ -208,8 +178,8 @@ function animate() {
               opacity: 1,
               duration: 0.4,
               onComplete() {
+                initBattle();
                 animateBattle();
-                document.querySelector('canvas').style.transform = 'scale(1)';
                 gsap.to('.flashing', {
                   opacity: 0,
                   duration: 0.4,
@@ -316,30 +286,9 @@ function animate() {
   }
 }
 
-// animate();
-
-renderedSprites.push(draggle);
-renderedSprites.push(emby);
-
-function animateBattle() {
-  const battleAnimationId = window.requestAnimationFrame(animateBattle);
-
-  battleBackground.draw();
-
-  renderedSprites.forEach((sprite) => {
-    sprite.draw();
-  });
-}
-
-animateBattle();
+animate();
 
 // Event listeners
-document.querySelectorAll('.atk-btn').forEach((btn) => {
-  btn.addEventListener('click', (e) => {
-    emby.attack(attacks[e.currentTarget.textContent], draggle, renderedSprites);
-  });
-});
-
 window.addEventListener('keydown', (e) => {
   switch (e.key) {
     case 'W':
