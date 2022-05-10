@@ -7,6 +7,19 @@ body {
   background-color: #222;
 }
 
+* {
+  font-family: 'Press Start 2P', sans-serif !important;
+}
+
+h1 {
+  margin: 0;
+}
+
+canvas {
+  transform: scale(1);
+  image-rendering: pixelated;
+}
+
 .container {
   overflow: hidden;
   position: relative;
@@ -24,7 +37,87 @@ body {
   pointer-events: none;
 }
 
-canvas {
-  transform: scale(4);
-  image-rendering: pixelated;
+.battle-menu-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 140px;
+  background-color: #fff;
+  display: flex;
+  border-top: 4px solid black;
+}
+
+.atk-type-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 4px solid #000;
+}
+
+.atk-type-container h1 {
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.atk-btn-container {
+  flex: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.atk-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.atk-btn:hover {
+  background-color: #ddd;
+}
+
+.atk-btn:active {
+  background-color: #ccc;
+}
+
+.health-container {
+  position: absolute;
+  width: 250px;
+  border: 4px solid black;
+  background-color: #fff;
+  z-index: 1;
+  padding: 12px;
+}
+
+.health-container.left {
+  top: 50px;
+  left: 50px;
+}
+
+.health-container.right {
+  bottom: 200px;
+  right: 50px;
+}
+
+.health-container h1 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.health-bar {
+  position: relative;
+  height: 5px;
+  width: 100%;
+  background-color: #ccc;
+  margin-top: 10px;
+}
+
+.health-bar-fill {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: green;
 }

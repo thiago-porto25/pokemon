@@ -4,13 +4,40 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <link href="./index.css" rel="stylesheet" />
     <title>Pokemon</title>
   </head>
   <body>
     <div class="container">
       <div class="flashing"></div>
+      <div class="health-container left">
+        <h1>Draggle</h1>
+        <div class="health-bar">
+          <div id="enemyHealthBar" class="health-bar-fill"></div>
+        </div>
+      </div>
+      <div class="health-container right">
+        <h1>Emby</h1>
+        <div class="health-bar">
+          <div id="allyHealthBar" class="health-bar-fill"></div>
+        </div>
+      </div>
       <canvas></canvas>
+      <div class="battle-menu-container">
+        <div class="atk-btn-container">
+          <button class="atk-btn">Fireball</button>
+          <button class="atk-btn">Tackle</button>
+        </div>
+        <div class="atk-type-container">
+          <h1>Attack Type</h1>
+        </div>
+      </div>
     </div>
   </body>
   <script
@@ -19,6 +46,8 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   ></script>
+  <script src="./animations.js"></script>
+  <script src="./data/attacks.js"></script>
   <script src="./data/collisions.js"></script>
   <script src="./data/battleZones.js"></script>
   <script src="./classes.js"></script>

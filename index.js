@@ -11,6 +11,7 @@ const collisionsMap = [];
 const battleZonesMap = [];
 const boundaries = [];
 const battleZoneBoundaries = [];
+const renderedSprites = [];
 const playerVelocity = 1;
 const offset = { x: 139, y: 142 };
 let lastKey = '';
@@ -96,6 +97,12 @@ playerLeftImg.src = './img/playerLeft.png';
 const foreImg = new Image();
 foreImg.src = './img/foreground.png';
 
+const draggleImg = new Image();
+draggleImg.src = './img/draggleSprite.png';
+
+const embyImg = new Image();
+embyImg.src = './img/embySprite.png';
+
 // Instantiating objects
 const background = new Sprite({
   img: bgImg,
@@ -120,11 +127,27 @@ const player = new Sprite({
     left: playerLeftImg,
     down: playerDownImg,
   },
+  scale: 4,
 });
 
 const foreground = new Sprite({
   img: foreImg,
   position: { x: offset.x, y: offset.y },
+});
+
+const draggle = new Sprite({
+  img: draggleImg,
+  position: { x: 800, y: 100 },
+  frames: { max: 4, hold: 30 },
+  animate: true,
+  isEnemy: true,
+});
+
+const emby = new Sprite({
+  img: embyImg,
+  position: { x: 280, y: 325 },
+  frames: { max: 4, hold: 30 },
+  animate: true,
 });
 
 // Populating movables
@@ -148,7 +171,7 @@ function animate() {
   foreground.draw();
 
   let moving = true;
-  player.moving = false;
+  player.animate = false;
 
   if (battle.initiated) return;
 
@@ -202,7 +225,7 @@ function animate() {
   }
 
   if (keys.w.pressed && lastKey === 'w') {
-    player.moving = true;
+    player.animate = true;
     player.img = player.sprites.up;
 
     for (let i = 0; i < boundaries.length; i++) {
@@ -224,7 +247,7 @@ function animate() {
       movables.forEach((movable) => (movable.position.y += playerVelocity));
     }
   } else if (keys.s.pressed && lastKey === 's') {
-    player.moving = true;
+    player.animate = true;
     player.img = player.sprites.down;
 
     for (let i = 0; i < boundaries.length; i++) {
@@ -246,7 +269,7 @@ function animate() {
       movables.forEach((movable) => (movable.position.y -= playerVelocity));
     }
   } else if (keys.a.pressed && lastKey === 'a') {
-    player.moving = true;
+    player.animate = true;
     player.img = player.sprites.left;
 
     for (let i = 0; i < boundaries.length; i++) {
@@ -269,7 +292,7 @@ function animate() {
       movables.forEach((movable) => (movable.position.x += playerVelocity));
     }
   } else if (keys.d.pressed && lastKey === 'd') {
-    player.moving = true;
+    player.animate = true;
     player.img = player.sprites.right;
 
     for (let i = 0; i < boundaries.length; i++) {
@@ -293,15 +316,30 @@ function animate() {
   }
 }
 
-animate();
+// animate();
+
+renderedSprites.push(draggle);
+renderedSprites.push(emby);
 
 function animateBattle() {
   const battleAnimationId = window.requestAnimationFrame(animateBattle);
 
   battleBackground.draw();
+
+  renderedSprites.forEach((sprite) => {
+    sprite.draw();
+  });
 }
 
+animateBattle();
+
 // Event listeners
+document.querySelectorAll('.atk-btn').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    emby.attack(attacks[e.currentTarget.textContent], draggle, renderedSprites);
+  });
+});
+
 window.addEventListener('keydown', (e) => {
   switch (e.key) {
     case 'W':
