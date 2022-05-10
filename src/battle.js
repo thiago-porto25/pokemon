@@ -1,3 +1,10 @@
+import gsap from 'gsap';
+import { audio } from './audio';
+import { Sprite, Monster } from './classes';
+import { animate, battle } from './index';
+import attacks from './data/attacks';
+import monsters from './monsters';
+
 let renderedSprites;
 let queue;
 let battleAnimationId;
@@ -5,7 +12,7 @@ let draggle;
 let emby;
 
 const battleBgImg = new Image();
-battleBgImg.src = './img/battleBackground.png';
+battleBgImg.src = '/img/battleBackground.png';
 
 const battleBackground = new Sprite({
   img: battleBgImg,
@@ -29,7 +36,7 @@ function endBattle() {
   });
 }
 
-function initBattle() {
+export function initBattle() {
   document.querySelector('canvas').style.transform = 'scale(1)';
   document.querySelector('.battle-ui').style.display = 'block';
   document.querySelector('.battle-overlay').style.display = 'none';
@@ -97,7 +104,7 @@ function initBattle() {
   });
 }
 
-function animateBattle() {
+export function animateBattle() {
   battleAnimationId = window.requestAnimationFrame(animateBattle);
 
   battleBackground.draw();

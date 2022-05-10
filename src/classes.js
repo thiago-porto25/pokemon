@@ -1,5 +1,9 @@
-// Classes
-class Boundary {
+import gsap from 'gsap';
+import { audio } from './audio';
+import { fireballAtkAnim, tackleAtkAnim, tackleDefAnim } from './animations';
+import ctx from './canvasSetup';
+
+export class Boundary {
   static width = 12;
   static height = 12;
 
@@ -15,7 +19,7 @@ class Boundary {
   }
 }
 
-class Sprite {
+export class Sprite {
   constructor({
     img,
     position,
@@ -78,7 +82,7 @@ class Sprite {
   }
 }
 
-class Monster extends Sprite {
+export class Monster extends Sprite {
   constructor({
     isEnemy = false,
     name,
@@ -130,7 +134,7 @@ class Monster extends Sprite {
 
   takeDamage(damage) {
     this.health -= damage;
-    tackleDefAnim(this, damage);
+    tackleDefAnim(this);
   }
 
   faint() {

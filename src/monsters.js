@@ -1,8 +1,10 @@
+import attacks from './data/attacks';
+
 const draggleImg = new Image();
-draggleImg.src = './img/draggleSprite.png';
+draggleImg.src = '/img/draggleSprite.png';
 
 const embyImg = new Image();
-embyImg.src = './img/embySprite.png';
+embyImg.src = '/img/embySprite.png';
 
 const monsters = {
   Emby: {
@@ -23,3 +25,5 @@ const monsters = {
     attacks: [attacks.Tackle, attacks.Fireball],
   },
 };
+
+export default monsters;

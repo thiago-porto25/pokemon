@@ -1,4 +1,8 @@
-const tackleAtkAnim = (position, isEnemy, callback) => {
+import gsap from 'gsap';
+import { audio } from './audio';
+import { Sprite } from './classes';
+
+export const tackleAtkAnim = (position, isEnemy, callback) => {
   const tl = gsap.timeline();
 
   let distance = 20;
@@ -23,7 +27,7 @@ const tackleAtkAnim = (position, isEnemy, callback) => {
     });
 };
 
-const tackleDefAnim = (recipient, damage) => {
+export const tackleDefAnim = (recipient) => {
   const tl = gsap.timeline();
 
   let distance = 10;
@@ -56,9 +60,14 @@ const tackleDefAnim = (recipient, damage) => {
   });
 };
 
-const fireballAtkAnim = (position, renderedSprites, recipient, callback) => {
+export const fireballAtkAnim = (
+  position,
+  renderedSprites,
+  recipient,
+  callback
+) => {
   const fireballImg = new Image();
-  fireballImg.src = './img/fireball.png';
+  fireballImg.src = '/img/fireball.png';
   const fireball = new Sprite({
     img: fireballImg,
     position: {

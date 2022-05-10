@@ -1,9 +1,11 @@
-// Initial canvas setup
-const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d');
-
-canvas.width = 1024;
-canvas.height = 576;
+import gsap from 'gsap';
+import { Boundary } from './classes';
+import { audio } from './audio';
+import { Sprite } from './classes';
+import { canvas } from './canvasSetup';
+import { animateBattle, initBattle } from './battle';
+import collisions from './data/collisions';
+import battleZones from './data/battleZones';
 
 // Variables
 let musicStarted = false;
@@ -21,7 +23,7 @@ const keys = {
   s: { pressed: false },
   d: { pressed: false },
 };
-const battle = {
+export const battle = {
   initiated: false,
 };
 
@@ -77,22 +79,22 @@ battleZonesMap.forEach((row, i) => {
 
 // Loading and positioning images
 const bgImg = new Image();
-bgImg.src = './img/pokemon_map.png';
+bgImg.src = '/img/pokemon_map.png';
 
 const playerDownImg = new Image();
-playerDownImg.src = './img/playerDown.png';
+playerDownImg.src = '/img/playerDown.png';
 
 const playerUpImg = new Image();
-playerUpImg.src = './img/playerUp.png';
+playerUpImg.src = '/img/playerUp.png';
 
 const playerRightImg = new Image();
-playerRightImg.src = './img/playerRight.png';
+playerRightImg.src = '/img/playerRight.png';
 
 const playerLeftImg = new Image();
-playerLeftImg.src = './img/playerLeft.png';
+playerLeftImg.src = '/img/playerLeft.png';
 
 const foreImg = new Image();
-foreImg.src = './img/foreground.png';
+foreImg.src = '/img/foreground.png';
 
 // Instantiating objects
 const background = new Sprite({
@@ -128,7 +130,7 @@ movables.push(foreground);
 movables.push(...battleZoneBoundaries);
 
 // Animation loop
-function animate() {
+export function animate() {
   const animationId = window.requestAnimationFrame(animate);
 
   background.draw();
