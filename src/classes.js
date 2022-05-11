@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { audio } from './audio';
+import { audio } from './data/audio';
 import { fireballAtkAnim, tackleAtkAnim, tackleDefAnim } from './animations';
 import ctx from './canvasSetup';
 

@@ -1,18 +1,16 @@
 import gsap from 'gsap';
-import { audio } from './audio';
+import { audio } from './data/audio';
+import { battleBgImg } from './data/images';
 import { Sprite, Monster } from './classes';
 import { animate, battle } from './index';
 import attacks from './data/attacks';
-import monsters from './monsters';
+import monsters from './data/monsters';
 
 let renderedSprites;
 let queue;
 let battleAnimationId;
 let draggle;
 let emby;
-
-const battleBgImg = new Image();
-battleBgImg.src = '/img/battleBackground.png';
 
 const battleBackground = new Sprite({
   img: battleBgImg,

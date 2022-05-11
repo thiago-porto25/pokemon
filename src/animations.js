@@ -1,6 +1,7 @@
 import gsap from 'gsap';
-import { audio } from './audio';
+import { audio } from './data/audio';
 import { Sprite } from './classes';
+import { fireballImg } from './data/images';
 
 export const tackleAtkAnim = (position, isEnemy, callback) => {
   const tl = gsap.timeline();
@@ -66,8 +67,6 @@ export const fireballAtkAnim = (
   recipient,
   callback
 ) => {
-  const fireballImg = new Image();
-  fireballImg.src = '/img/fireball.png';
   const fireball = new Sprite({
     img: fireballImg,
     position: {

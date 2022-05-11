@@ -1,10 +1,5 @@
-import attacks from './data/attacks';
-
-const draggleImg = new Image();
-draggleImg.src = '/img/draggleSprite.png';
-
-const embyImg = new Image();
-embyImg.src = '/img/embySprite.png';
+import attacks from './attacks';
+import { draggleImg, embyImg } from './images';
 
 const monsters = {
   Emby: {
