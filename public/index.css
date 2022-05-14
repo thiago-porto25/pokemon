@@ -7,6 +7,21 @@ body {
   background-color: #222;
 }
 
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+}
+
+a {
+  color: inherit;
+}
+
 * {
   font-family: 'Press Start 2P', sans-serif !important;
 }
