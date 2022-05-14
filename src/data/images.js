@@ -28,6 +28,12 @@ fireballImg.src = '/img/fireball.png';
 const battleBgImg = new Image();
 battleBgImg.src = '/img/battleBackground.png';
 
+const secretImg = new Image();
+secretImg.src = '/img/secretMap.png';
+
+const secretFore = new Image();
+secretFore.src = '/img/secretForeground.png';
+
 export {
   draggleImg,
   embyImg,
@@ -39,4 +45,6 @@ export {
   foreImg,
   fireballImg,
   battleBgImg,
+  secretImg,
+  secretFore,
 };

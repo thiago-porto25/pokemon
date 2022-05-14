@@ -3,8 +3,10 @@ import { audio } from './data/audio';
 import { Sprite } from './classes';
 import { canvas } from './canvasSetup';
 import { animateBattle, initBattle } from './battle';
+import { animateSecret } from './secret';
 import collisions from './data/collisions';
 import battleZones from './data/battleZones';
+import secretZones from './data/secretZones';
 import {
   bgImg,
   foreImg,
@@ -19,15 +21,18 @@ import movePlayer from './lib/movePlayer';
 
 // Variables
 let musicStarted = false;
+let fights = 0;
 const movables = [];
 const collisionsMap = [];
 const battleZonesMap = [];
+const secretZonesMap = [];
 const boundaries = [];
 const battleZoneBoundaries = [];
-const playerVelocity = 1;
+const secretZonesBoundaries = [];
+export const playerVelocity = 1;
 const offset = { x: 139, y: 142 };
-let lastKey = '';
-const keys = {
+export let lastKey = '';
+export const keys = {
   w: { pressed: false },
   a: { pressed: false },
   s: { pressed: false },
@@ -42,6 +47,9 @@ setupBoundary(collisionsMap, collisions, boundaries, offset);
 
 // Battle zones
 setupBoundary(battleZonesMap, battleZones, battleZoneBoundaries, offset);
+
+// Secret zones
+setupBoundary(secretZonesMap, secretZones, secretZonesBoundaries, offset);
 
 // Instantiating objects
 const background = new Sprite({
@@ -75,6 +83,7 @@ movables.push(background);
 movables.push(...boundaries);
 movables.push(foreground);
 movables.push(...battleZoneBoundaries);
+movables.push(...secretZonesBoundaries);
 
 // Animation loop
 export function animate() {
@@ -86,6 +95,9 @@ export function animate() {
   });
   battleZoneBoundaries.forEach((battleZone) => {
     battleZone.draw();
+  });
+  secretZonesBoundaries.forEach((secretZone) => {
+    secretZone.draw();
   });
   player.draw();
   foreground.draw();
@@ -100,6 +112,28 @@ export function animate() {
   if (battle.initiated) return;
 
   if (keys.w.pressed || keys.s.pressed || keys.a.pressed || keys.d.pressed) {
+    if (fights >= 3) {
+      for (let i = 0; i < secretZonesBoundaries.length; i++) {
+        if (rectangularCollision(player, secretZonesBoundaries[i])) {
+          window.cancelAnimationFrame(animationId);
+
+          gsap.to('.flashing', {
+            duration: 1.2,
+            opacity: 1,
+            onComplete: () => {
+              animateSecret();
+              gsap.to('.flashing', {
+                duration: 1.2,
+                opacity: 0,
+              });
+            },
+          });
+
+          break;
+        }
+      }
+    }
+
     for (let i = 0; i < battleZoneBoundaries.length; i++) {
       const battleZone = battleZoneBoundaries[i];
       const overlappingArea =
@@ -135,6 +169,7 @@ export function animate() {
               opacity: 1,
               duration: 0.4,
               onComplete() {
+                fights += 1;
                 initBattle();
                 animateBattle();
                 audio.battle.play();
